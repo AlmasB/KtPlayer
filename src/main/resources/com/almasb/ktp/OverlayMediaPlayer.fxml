@@ -31,7 +31,8 @@
 
             <Label fx:id="playTime" text="Time" textFill="white" minWidth="-Infinity" />
 
-            <Slider fx:id="timeSlider" id="media-slider" minWidth="190" />
+            <Slider fx:id="timeSlider" id="media-slider" minWidth="190"
+                min="0" max="1" />
 
             <Button id="back-button" onAction="#onBack" />
             <Button id="stop-button" onAction="#onStop" />
@@ -41,7 +42,8 @@
 
             <Label text="Vol" textFill="white" minWidth="-Infinity" />
 
-            <Slider fx:id="volumeSlider" id="media-slider" prefWidth="120" minWidth="30" maxWidth="-Infinity" />
+            <Slider fx:id="volumeSlider" id="media-slider" prefWidth="120" minWidth="30" maxWidth="-Infinity"
+                min="0" max="1" />
 
         </HBox>
     </ToolBar>

@@ -9,7 +9,13 @@ import javafx.stage.Stage
 class KtPlayerApp : Application() {
 
     override fun start(stage: Stage) {
-        stage.scene = Scene(FXMLLoader.load(javaClass.getResource("main.fxml")))
+        val loader = FXMLLoader(javaClass.getResource("main.fxml"))
+
+        stage.scene = Scene(loader.load())
+        stage.setOnCloseRequest {
+            it.consume()
+            loader.getController<MainController>().onExit()
+        }
         stage.show()
     }
 }
