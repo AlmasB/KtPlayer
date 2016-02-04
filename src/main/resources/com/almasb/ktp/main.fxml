@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import java.net.URL?>
+<BorderPane prefHeight="400.0" prefWidth="600.0"
+            xmlns="http://javafx.com/javafx/1.8.0.72"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.almasb.ktp.Controller">
+
+    <!--<stylesheets>-->
+        <!--<URL value="@OverlayMediaPlayer.css"/>-->
+    <!--</stylesheets>-->
+
+    <top>
+        <MenuBar id="player-pane" BorderPane.alignment="CENTER">
+            <Menu text="File">
+                <MenuItem text="Close"/>
+            </Menu>
+            <Menu text="Edit">
+                <MenuItem text="Delete"/>
+            </Menu>
+            <Menu text="Help">
+                <MenuItem text="About"/>
+            </Menu>
+        </MenuBar>
+    </top>
+
+    <center>
+        <fx:include source="OverlayMediaPlayer.fxml" />
+    </center>
+
+</BorderPane>
