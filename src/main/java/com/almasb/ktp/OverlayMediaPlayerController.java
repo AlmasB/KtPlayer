@@ -3,9 +3,8 @@ package com.almasb.ktp;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.ParallelTransition;
+import javafx.animation.Transition;
 import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -13,14 +12,11 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
 
 /**
  * @author Almas Baimagambetov (AlmasB) (almaslvl@gmail.com)
@@ -48,14 +44,42 @@ public class OverlayMediaPlayerController {
     private Slider volumeSlider;
 
     @FXML
-    private ToolBar topBar;
-
-    @FXML
     private ToolBar bottomBar;
 
-    private ParallelTransition transition = null;
+    private Transition transition = null;
+
+    private MediaPlayerService playerService;
 
     public void initialize() {
+        timeSlider.valueProperty().addListener(o -> {
+            if (timeSlider.isValueChanging()) {
+                // multiply duration by percentage calculated by slider position
+                if (duration != null) {
+                    mediaPlayer.seek(duration.multiply(timeSlider.getValue() / 100.0));
+                }
+                updateValues();
+
+            }
+        });
+
+        volumeSlider.valueProperty().addListener((o, oldValue, newValue) -> {
+            if (volumeSlider.isValueChanging()) {
+                mediaPlayer.setVolume(volumeSlider.getValue() / 100.0);
+            }
+        });
+
+
+
+
+        playerService = KtPlayerAppKt.getInjector().getInstance(MediaPlayerService.class);
+
+        mediaView.mediaPlayerProperty().bind(playerService.mediaPlayerProperty());
+        mediaView.mediaPlayerProperty().addListener((observable, oldPlayer, newPlayer) -> {
+            if (newPlayer != null) {
+                mediaPlayer = newPlayer;
+                initPlayer();
+            }
+        });
     }
 
     public void onDragOver(DragEvent event) {
@@ -71,27 +95,16 @@ public class OverlayMediaPlayerController {
         if (db.hasFiles()) {
             success = true;
             File file = db.getFiles().get(0);
-            Path path = file.toPath();
 
-            try {
-                mediaPlayer = new MediaPlayer(new Media(path.toUri().toURL().toExternalForm()));
-                mediaPlayer.setAutoPlay(true);
-
-                ini();
-
-                mediaView.setMediaPlayer(mediaPlayer);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            // only accept java source files
+            playerService.setMediaFile(file);
 //            if (path.getFileName().toString().endsWith(".java"))
         }
         event.setDropCompleted(success);
         event.consume();
     }
 
-    public void ini() {
+    public void initPlayer() {
+        mediaPlayer.setAutoPlay(true);
         mediaPlayer.currentTimeProperty().addListener((o, old, newValue) -> {
             updateValues();
         });
@@ -112,38 +125,18 @@ public class OverlayMediaPlayerController {
             }
         });
         mediaPlayer.setCycleCount(repeat ? MediaPlayer.INDEFINITE : 1);
-
-        timeSlider.valueProperty().addListener(o -> {
-            if (timeSlider.isValueChanging()) {
-                // multiply duration by percentage calculated by slider position
-                if (duration != null) {
-                    mediaPlayer.seek(duration.multiply(timeSlider.getValue() / 100.0));
-                }
-                updateValues();
-
-            }
-        });
-
-        volumeSlider.valueProperty().addListener((o, oldValue, newValue) -> {
-            if (volumeSlider.isValueChanging()) {
-                mediaPlayer.setVolume(volumeSlider.getValue() / 100.0);
-            }
-        });
     }
 
     public void onMouseEntered() {
         if (transition != null) {
             transition.stop();
         }
-        FadeTransition fadeTransition1 = new FadeTransition(Duration.millis(200), topBar);
-        fadeTransition1.setToValue(1.0);
-        fadeTransition1.setInterpolator(Interpolator.EASE_OUT);
 
         FadeTransition fadeTransition2 = new FadeTransition(Duration.millis(200), bottomBar);
         fadeTransition2.setToValue(1.0);
         fadeTransition2.setInterpolator(Interpolator.EASE_OUT);
 
-        transition = new ParallelTransition(fadeTransition1, fadeTransition2);
+        transition = new ParallelTransition( fadeTransition2);
         transition.play();
     }
 
@@ -151,14 +144,12 @@ public class OverlayMediaPlayerController {
         if (transition != null) {
             transition.stop();
         }
-        FadeTransition fadeTransitionTop = new FadeTransition(Duration.millis(800), topBar);
-        fadeTransitionTop.setToValue(0.0);
-        fadeTransitionTop.setInterpolator(Interpolator.EASE_OUT);
 
         FadeTransition fadeTransitionBottom = new FadeTransition(Duration.millis(800), bottomBar);
         fadeTransitionBottom.setToValue(0.0);
         fadeTransitionBottom.setInterpolator(Interpolator.EASE_OUT);
-        transition = new ParallelTransition(fadeTransitionTop, fadeTransitionBottom);
+
+        transition = new ParallelTransition( fadeTransitionBottom);
         transition.play();
     }
 

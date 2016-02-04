@@ -6,7 +6,7 @@
 <BorderPane prefHeight="400.0" prefWidth="600.0"
             xmlns="http://javafx.com/javafx/1.8.0.72"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.almasb.ktp.Controller">
+            fx:controller="com.almasb.ktp.MainController">
 
     <!--<stylesheets>-->
         <!--<URL value="@OverlayMediaPlayer.css"/>-->
@@ -15,13 +15,14 @@
     <top>
         <MenuBar id="player-pane" BorderPane.alignment="CENTER">
             <Menu text="File">
-                <MenuItem text="Close"/>
+                <MenuItem text="Open File..." onAction="#onOpenFile" />
+                <MenuItem text="Exit" onAction="#onExit"/>
             </Menu>
             <Menu text="Edit">
                 <MenuItem text="Delete"/>
             </Menu>
             <Menu text="Help">
-                <MenuItem text="About"/>
+                <MenuItem text="About" onAction="#onAbout"/>
             </Menu>
         </MenuBar>
     </top>

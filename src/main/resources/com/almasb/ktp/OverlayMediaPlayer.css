@@ -47,27 +47,27 @@
     -fx-content-display: graphic-only;
 }
 
-#top-bar {
+#bottom-bar {
     -fx-background-color: rgba(0, 0, 0, 0);
 }
 
-#top-bar .context-menu {
+#bottom-bar .context-menu {
     -fx-padding: 0;
     -fx-background-radius: 30;
 }
 
-#top-bar .context-menu > * > .menu-item {
+#bottom-bar .context-menu > * > .menu-item {
     -fx-padding: 0;
     -fx-background-radius: 30;
     -fx-color: -fx-faint-focus-color;
     -fx-background-color: -fx-body-color;
 }
 
-#top-bar .context-menu > * > .menu-item:hover {
+#bottom-bar .context-menu > * > .menu-item:hover {
     -fx-color: -fx-focus-color;
 }
 
-#top-bar .context-menu > * > .menu-item > * > .label {
+#bottom-bar .context-menu > * > .menu-item > * > .label {
     -fx-text-fill: -fx-text-background-color;
 }
 

@@ -24,32 +24,25 @@
 
     </MediaView>
 
-    <ToolBar fx:id="topBar" id="top-bar" opacity="0">
-        <HBox alignment="CENTER">
-            <padding>
-                <Insets top="5" right="10" bottom="5" left="10"/>
-            </padding>
+    <ToolBar fx:id="bottomBar" id="bottom-bar" opacity="0"
+             translateX="${ompRoot.width / 2 - bottomBar.width / 2}" translateY="${ompRoot.height - 50}">
+
+        <HBox id="bottom" alignment="CENTER">
 
             <Label fx:id="playTime" text="Time" textFill="white" minWidth="-Infinity" />
 
-            <Slider fx:id="timeSlider" id="media-slider" minWidth="200" />
+            <Slider fx:id="timeSlider" id="media-slider" minWidth="190" />
 
-            <Label minWidth="75" prefWidth="75" textFill="white" />
-
-            <Label text="Vol" textFill="white" minWidth="-Infinity" />
-
-            <Slider fx:id="volumeSlider" id="media-slider" prefWidth="120" minWidth="30" maxWidth="-Infinity" />
-        </HBox>
-    </ToolBar>
-
-    <ToolBar fx:id="bottomBar" id="bottom-bar" opacity="0"
-             translateX="${ompRoot.width / 2 - 100}" translateY="${ompRoot.height - 100}">
-        <HBox id="bottom" alignment="CENTER">
             <Button id="back-button" onAction="#onBack" />
             <Button id="stop-button" onAction="#onStop" />
             <Button id="play-button" onAction="#onPlay" />
             <Button id="pause-button" onAction="#onPause" />
             <Button id="forward-button" onAction="#onForward" />
+
+            <Label text="Vol" textFill="white" minWidth="-Infinity" />
+
+            <Slider fx:id="volumeSlider" id="media-slider" prefWidth="120" minWidth="30" maxWidth="-Infinity" />
+
         </HBox>
     </ToolBar>
 
